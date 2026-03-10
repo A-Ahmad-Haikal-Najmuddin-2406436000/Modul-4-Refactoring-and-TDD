@@ -35,4 +35,67 @@ class PaymentTest {
         assertEquals("SUCCESS", payment.getStatus());
         assertEquals(paymentData, payment.getPaymentData());
     }
+
+    @Test
+    void testCreatePaymentEmptyId() {
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Payment(
+                    null,
+                    "BANK_TRANSFER", paymentData, "SUCCESS"
+            );
+        });
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Payment(
+                    "      ",
+                    "BANK_TRANSFER", paymentData, "SUCCESS"
+            );
+        });
+    }
+
+    @Test
+    void testCreatePaymentEmptyMethod() {
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Payment(
+                    "a0f9de46-90b1-437d-b0f0-dded07e0f912",
+                    null, paymentData, "SUCCESS"
+            );
+        });
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Payment(
+                    "a0f9de46-90b1-437d-b0f0-dded07e0f912",
+                    "    ", paymentData, "SUCCESS"
+            );
+        });
+    }
+
+    @Test
+    void testCreatePaymentEmptyPaymentData() {
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Payment(
+                    "a0f9de46-90b1-437d-b0f0-dded07e0f912",
+                    "BANK_TRANSFER", null, "SUCCESS"
+            );
+        });
+    }
+
+    @Test
+    void testSetStatusToCancelled() {
+        Payment payment = new Payment("a0f9de46-90b1-437d-b0f0-dded07e0f912",
+                "VOUCHER_CODE", paymentData);
+
+        payment.setStatus("PENDING");
+
+        assertEquals("PENDING", payment.getStatus());
+    }
+
+    @Test
+    void testSetStatusToInvalidStatus() {
+        Payment payment = new Payment("a0f9de46-90b1-437d-b0f0-dded07e0f912",
+                "VOUCHER_CODE", paymentData);
+
+        assertThrows(IllegalArgumentException.class, () -> payment.setStatus("MEOW"));
+    }
 }
