@@ -12,13 +12,13 @@ public enum OrderStatus {
 
     private final String value;
 
-    OrderStatus(String value) {
+    private OrderStatus(String value) {
         this.value = value;
     }
 
     public static boolean contains(String param) {
         for (OrderStatus status : OrderStatus.values()) {
-            if (status.value.equals(param)) {
+            if (status.name().equals(param)) {
                 return true;
             }
         }

@@ -1,9 +1,11 @@
-package test.java.id.ac.ui.cs.advprog.eshop.model;
+package id.ac.ui.cs.advprog.eshop.model;
 
+import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import id.ac.ui.cs.advprog.eshop.model.Product;
+import id.ac.ui.cs.advprog.eshop.model.Order;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,10 +76,10 @@ class OrderTest {
                 this.products,
                 1708560000L,
                 "Safira Sudrajat",
-                "SUCCESS"
+                OrderStatus.SUCCESS.getValue()
         );
 
-        assertEquals("SUCCESS", order.getStatus());
+        assertEquals(OrderStatus.SUCCESS.getValue(), order.getStatus());
     }
 
     @Test
@@ -102,9 +104,9 @@ class OrderTest {
                 "Safira Sudrajat"
         );
 
-        order.setStatus("CANCELLED");
+        order.setStatus(OrderStatus.CANCELLED.getValue());
 
-        assertEquals("CANCELLED", order.getStatus());
+        assertEquals(OrderStatus.CANCELLED.getValue(), order.getStatus());
     }
 
     @Test

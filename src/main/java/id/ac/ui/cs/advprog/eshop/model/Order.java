@@ -1,19 +1,21 @@
-package main.java.id.ac.ui.cs.advprog.eshop.model;
+package id.ac.ui.cs.advprog.eshop.model;
 
 import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
+import id.ac.ui.cs.advprog.eshop.model.Product;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
 
 @Getter
-@Setter
+@Builder
 public class Order {
-
     private String id;
     private List<Product> products;
     private Long orderTime;
     private String author;
+    @Setter
     private String status;
 
     public Order(String id, List<Product> products, Long orderTime, String author) {
@@ -29,19 +31,8 @@ public class Order {
     }
 
     public Order(String id, List<Product> products, Long orderTime, String author, String status) {
-        if (products == null || products.isEmpty()) {
-            throw new IllegalArgumentException("Products cannot be empty");
-        }
-
-        if (!OrderStatus.contains(status)) {
-            throw new IllegalArgumentException("Invalid status");
-        }
-
-        this.id = id;
-        this.products = products;
-        this.orderTime = orderTime;
-        this.author = author;
-        this.status = status;
+        this(id, products, orderTime, author);
+        this.setStatus(status);
     }
 
     public void setStatus(String status) {
