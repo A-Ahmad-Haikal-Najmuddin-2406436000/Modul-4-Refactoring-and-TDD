@@ -29,7 +29,7 @@ class PaymentRepositoryTest {
         Payment payment1 = new Payment("a0f9de46-90b1-437d-b0f0-dded07e0f912",
                 "VOUCHER_CODE", paymentData);
         payments.add(payment1);
-        Payment payment2 = new Payment("a0f9de46-90b1-437d-b0f0-dded07e0f912",
+        Payment payment2 = new Payment("a0f9de46-88abs-437d-b0f0-dded07e0f912",
                 "BANK_TRANSFER", paymentData);
         payments.add(payment2);
     }
@@ -89,8 +89,10 @@ class PaymentRepositoryTest {
     void testFindAllIfMoreThanOnePayment() {
         Payment payment1 = new Payment("a0f9de46-90b1-437d-b0f0-dded07e0f912",
                 "VOUCHER_CODE", paymentData);
-        Payment payment2 = new Payment("a0f9de46-90b1-437d-b0f0-dded07e0f912",
+        paymentRepository.save(payment1);
+        Payment payment2 = new Payment("a0f9de46-ab44-437d-b0f0-dded07e0f912",
                 "BANK_TRANSFER", paymentData);
+        paymentRepository.save(payment2);
 
         Iterator<Payment> paymentIterator = paymentRepository.findAll();
         assertTrue(paymentIterator.hasNext());
