@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.HashMap;
@@ -82,13 +83,13 @@ class PaymentTest {
     }
 
     @Test
-    void testSetStatusToCancelled() {
+    void testSetStatusToRejected() {
         Payment payment = new Payment("a0f9de46-90b1-437d-b0f0-dded07e0f912",
                 "VOUCHER_CODE", paymentData);
 
-        payment.setStatus("PENDING");
+        payment.setStatus(PaymentStatus.REJECTED.getValue());
 
-        assertEquals("PENDING", payment.getStatus());
+        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
     }
 
     @Test
