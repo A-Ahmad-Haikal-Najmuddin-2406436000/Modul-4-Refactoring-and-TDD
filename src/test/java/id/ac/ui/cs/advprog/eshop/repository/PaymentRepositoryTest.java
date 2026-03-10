@@ -3,6 +3,7 @@ package id.ac.ui.cs.advprog.eshop.repository;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import id.ac.ui.cs.advprog.eshop.model.Order;
+import id.ac.ui.cs.advprog.eshop.model.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -82,6 +83,22 @@ class PaymentRepositoryTest {
 
         Payment findResult = paymentRepository.findById("zczc");
         assertNull(findResult);
+    }
+
+    @Test
+    void testFindAllIfMoreThanOnePayment() {
+        Payment payment1 = new Payment("a0f9de46-90b1-437d-b0f0-dded07e0f912",
+                "VOUCHER_CODE", paymentData);
+        Payment payment2 = new Payment("a0f9de46-90b1-437d-b0f0-dded07e0f912",
+                "BANK_TRANSFER", paymentData);
+
+        Iterator<Payment> paymentIterator = paymentRepository.findAll();
+        assertTrue(paymentIterator.hasNext());
+        Payment savedPayment = paymentIterator.next();
+        assertEquals(payment1.getId(), savedPayment.getId());
+        savedPayment = paymentIterator.next();
+        assertEquals(payment2.getId(), savedPayment.getId());
+        assertFalse(paymentIterator.hasNext());
     }
 
 }
