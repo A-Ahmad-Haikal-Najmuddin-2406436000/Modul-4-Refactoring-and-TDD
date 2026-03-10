@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.repository;
 
+import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import id.ac.ui.cs.advprog.eshop.model.Order;
@@ -27,10 +28,10 @@ class PaymentRepositoryTest {
 
         payments = new ArrayList<>();
         Payment payment1 = new Payment("a0f9de46-90b1-437d-b0f0-dded07e0f912",
-                "VOUCHER_CODE", paymentData);
+                PaymentMethod.VOUCHER_CODE.getValue(), paymentData);
         payments.add(payment1);
         Payment payment2 = new Payment("a0f9de46-88abs-437d-b0f0-dded07e0f912",
-                "BANK_TRANSFER", paymentData);
+                PaymentMethod.BANK_TRANSFER.getValue(), paymentData);
         payments.add(payment2);
     }
 
@@ -88,10 +89,10 @@ class PaymentRepositoryTest {
     @Test
     void testFindAllIfMoreThanOnePayment() {
         Payment payment1 = new Payment("a0f9de46-90b1-437d-b0f0-dded07e0f912",
-                "VOUCHER_CODE", paymentData);
+                PaymentMethod.VOUCHER_CODE.getValue(), paymentData);
         paymentRepository.save(payment1);
         Payment payment2 = new Payment("a0f9de46-ab44-437d-b0f0-dded07e0f912",
-                "BANK_TRANSFER", paymentData);
+                PaymentMethod.BANK_TRANSFER.getValue(), paymentData);
         paymentRepository.save(payment2);
 
         Iterator<Payment> paymentIterator = paymentRepository.findAll();

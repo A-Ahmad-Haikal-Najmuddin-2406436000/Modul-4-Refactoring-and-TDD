@@ -1,6 +1,7 @@
 package id.ac.ui.cs.advprog.eshop.service;
 
 import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import id.ac.ui.cs.advprog.eshop.model.Order;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
@@ -59,9 +60,9 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     private String determineStatus(String method, Map<String, String> paymentData) {
-        if ("VOUCHER_CODE".equals(method)) {
+        if (PaymentMethod.VOUCHER_CODE.getValue().equals(method)) {
             return validateVoucherCode(paymentData);
-        } else if ("BANK_TRANSFER".equals(method)) {
+        } else if (PaymentMethod.BANK_TRANSFER.getValue().equals(method)) {
             return validateBankTransfer(paymentData);
         }
         return PaymentStatus.REJECTED.getValue();

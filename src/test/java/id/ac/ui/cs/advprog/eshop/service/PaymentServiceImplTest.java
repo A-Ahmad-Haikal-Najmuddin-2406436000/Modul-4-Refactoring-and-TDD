@@ -1,6 +1,7 @@
 package id.ac.ui.cs.advprog.eshop.service;
 
 import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import id.ac.ui.cs.advprog.eshop.model.Order;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
@@ -51,10 +52,10 @@ class PaymentServiceImplTest {
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("voucherCode", "ESHOP1234ABC5678");
 
-        Payment result = paymentService.addPayment(order, "VOUCHER_CODE", paymentData);
+        Payment result = paymentService.addPayment(order, PaymentMethod.VOUCHER_CODE.getValue(), paymentData);
 
         assertEquals(PaymentStatus.SUCCESS.getValue(), result.getStatus());
-        assertEquals("VOUCHER_CODE", result.getMethod());
+        assertEquals(PaymentMethod.VOUCHER_CODE.getValue(), result.getMethod());
         assertEquals(OrderStatus.SUCCESS.getValue(), order.getStatus());
         verify(paymentRepository, times(1)).save(any(Payment.class));
         verify(orderRepository, times(1)).save(order);
@@ -65,7 +66,7 @@ class PaymentServiceImplTest {
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("voucherCode", "ESHOP1234ABC");
 
-        Payment result = paymentService.addPayment(order, "VOUCHER_CODE", paymentData);
+        Payment result = paymentService.addPayment(order, PaymentMethod.VOUCHER_CODE.getValue(), paymentData);
 
         assertEquals(PaymentStatus.REJECTED.getValue(), result.getStatus());
         assertEquals(OrderStatus.FAILED.getValue(), order.getStatus());
@@ -76,7 +77,7 @@ class PaymentServiceImplTest {
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("voucherCode", "XSHOP1234ABC5678");
 
-        Payment result = paymentService.addPayment(order, "VOUCHER_CODE", paymentData);
+        Payment result = paymentService.addPayment(order, PaymentMethod.VOUCHER_CODE.getValue(), paymentData);
 
         assertEquals(PaymentStatus.REJECTED.getValue(), result.getStatus());
     }
@@ -86,7 +87,7 @@ class PaymentServiceImplTest {
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("voucherCode", "ESHOP1234ABCDEFG");
 
-        Payment result = paymentService.addPayment(order, "VOUCHER_CODE", paymentData);
+        Payment result = paymentService.addPayment(order, PaymentMethod.VOUCHER_CODE.getValue(), paymentData);
 
         assertEquals(PaymentStatus.REJECTED.getValue(), result.getStatus());
     }
@@ -95,7 +96,7 @@ class PaymentServiceImplTest {
     void testAddPaymentVoucherCodeNull() {
         Map<String, String> paymentData = new HashMap<>();
 
-        Payment result = paymentService.addPayment(order, "VOUCHER_CODE", paymentData);
+        Payment result = paymentService.addPayment(order, PaymentMethod.VOUCHER_CODE.getValue(), paymentData);
 
         assertEquals(PaymentStatus.REJECTED.getValue(), result.getStatus());
     }
@@ -106,10 +107,10 @@ class PaymentServiceImplTest {
         paymentData.put("bankName", "BCA");
         paymentData.put("referenceCode", "REF123456");
 
-        Payment result = paymentService.addPayment(order, "BANK_TRANSFER", paymentData);
+        Payment result = paymentService.addPayment(order, PaymentMethod.BANK_TRANSFER.getValue(), paymentData);
 
         assertEquals(PaymentStatus.SUCCESS.getValue(), result.getStatus());
-        assertEquals("BANK_TRANSFER", result.getMethod());
+        assertEquals(PaymentMethod.BANK_TRANSFER.getValue(), result.getMethod());
         assertEquals(OrderStatus.SUCCESS.getValue(), order.getStatus());
     }
 
@@ -119,7 +120,7 @@ class PaymentServiceImplTest {
         paymentData.put("bankName", "");
         paymentData.put("referenceCode", "REF123456");
 
-        Payment result = paymentService.addPayment(order, "BANK_TRANSFER", paymentData);
+        Payment result = paymentService.addPayment(order, PaymentMethod.BANK_TRANSFER.getValue(), paymentData);
 
         assertEquals(PaymentStatus.REJECTED.getValue(), result.getStatus());
         assertEquals(OrderStatus.FAILED.getValue(), order.getStatus());
@@ -130,7 +131,7 @@ class PaymentServiceImplTest {
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("referenceCode", "REF123456");
 
-        Payment result = paymentService.addPayment(order, "BANK_TRANSFER", paymentData);
+        Payment result = paymentService.addPayment(order, PaymentMethod.BANK_TRANSFER.getValue(), paymentData);
 
         assertEquals(PaymentStatus.REJECTED.getValue(), result.getStatus());
     }
@@ -141,7 +142,7 @@ class PaymentServiceImplTest {
         paymentData.put("bankName", "BCA");
         paymentData.put("referenceCode", "");
 
-        Payment result = paymentService.addPayment(order, "BANK_TRANSFER", paymentData);
+        Payment result = paymentService.addPayment(order, PaymentMethod.BANK_TRANSFER.getValue(), paymentData);
 
         assertEquals(PaymentStatus.REJECTED.getValue(), result.getStatus());
     }
@@ -151,7 +152,7 @@ class PaymentServiceImplTest {
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("bankName", "BCA");
 
-        Payment result = paymentService.addPayment(order, "BANK_TRANSFER", paymentData);
+        Payment result = paymentService.addPayment(order, PaymentMethod.BANK_TRANSFER.getValue(), paymentData);
 
         assertEquals(PaymentStatus.REJECTED.getValue(), result.getStatus());
     }
@@ -160,7 +161,7 @@ class PaymentServiceImplTest {
     void testSetStatusSuccess() {
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("voucherCode", "ESHOP1234ABC5678");
-        Payment payment = new Payment("pay-id-1", "VOUCHER_CODE", paymentData, PaymentStatus.REJECTED.getValue());
+        Payment payment = new Payment("pay-id-1", PaymentMethod.VOUCHER_CODE.getValue(), paymentData, PaymentStatus.REJECTED.getValue());
 
         Payment result = paymentService.setStatus(payment, PaymentStatus.SUCCESS.getValue());
 
@@ -172,7 +173,7 @@ class PaymentServiceImplTest {
     void testSetStatusInvalid() {
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("voucherCode", "ESHOP1234ABC5678");
-        Payment payment = new Payment("pay-id-1", "VOUCHER_CODE", paymentData, PaymentStatus.REJECTED.getValue());
+        Payment payment = new Payment("pay-id-1", PaymentMethod.VOUCHER_CODE.getValue(), paymentData, PaymentStatus.REJECTED.getValue());
 
         assertThrows(IllegalArgumentException.class, () ->
                 paymentService.setStatus(payment, "MEOW"));
@@ -182,7 +183,7 @@ class PaymentServiceImplTest {
     void testGetPaymentFound() {
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("voucherCode", "ESHOP1234ABC5678");
-        Payment payment = new Payment("pay-id-1", "VOUCHER_CODE", paymentData);
+        Payment payment = new Payment("pay-id-1", PaymentMethod.VOUCHER_CODE.getValue(), paymentData);
 
         doReturn(payment).when(paymentRepository).findById("pay-id-1");
 
@@ -203,8 +204,8 @@ class PaymentServiceImplTest {
     void testGetAllPayments() {
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("voucherCode", "ESHOP1234ABC5678");
-        Payment payment1 = new Payment("pay-1", "VOUCHER_CODE", paymentData);
-        Payment payment2 = new Payment("pay-2", "BANK_TRANSFER", paymentData);
+        Payment payment1 = new Payment("pay-1", PaymentMethod.VOUCHER_CODE.getValue(), paymentData);
+        Payment payment2 = new Payment("pay-2", PaymentMethod.BANK_TRANSFER.getValue(), paymentData);
 
         List<Payment> paymentList = new ArrayList<>(List.of(payment1, payment2));
         doReturn(paymentList.iterator()).when(paymentRepository).findAll();
